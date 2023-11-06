@@ -39,10 +39,19 @@ namespace ServiceLocator.UI
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            owner.MonkeyDroppedAt(rectTransform.position);
+            owner.MonkeyDroppedAt(eventData.position);
             ResetMonkeyImagePosition();
         }
 
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            monkeyImage.color = new Color(1, 1, 1, 0.6f);
+        }
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            ResetMonkeyImageColor();
+        }
         private void ResetMonkeyImagePosition()
         {
             rectTransform.position = initialPosition;
@@ -50,17 +59,6 @@ namespace ServiceLocator.UI
             GetComponent<LayoutElement>().enabled = false;
             GetComponent<LayoutElement>().enabled = true;
         }
-
-        public void OnPointerDown(PointerEventData eventData)
-        {
-            monkeyImage.color = new Color(1, 1, 1, 0.6f);
-        }
-
-        public void OnPointerUp(PointerEventData eventData)
-        {
-            ResetMonkeyImageColor();
-        }
-
         private void ResetMonkeyImageColor()
         {
             monkeyImage.color = new Color(1, 1, 1, 1f);
