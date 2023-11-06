@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace ServiceLocator.Map
 {
-    public class MapService : MonoBehaviour
+    public class MapService : GenericMonoSingleton<MapService>
     {
         [SerializeField] private MapScriptableObject mapScriptableObject;
 
