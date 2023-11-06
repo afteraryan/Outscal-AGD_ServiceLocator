@@ -1,20 +1,36 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using ServiceLocator.Player;
 using ServiceLocator.Events;
+using Object = UnityEngine.Object;
 
 namespace ServiceLocator.Map
 {
     public class MapService : MonoBehaviour
     {
-        [SerializeField] private EventService eventService;
         [SerializeField] private MapScriptableObject mapScriptableObject;
 
         private Grid currentGrid;
         private Tilemap currentTileMap;
         private MapData currentMapData;
         private SpriteRenderer tileOverlay;
+        
+        //Singleton Declarations
+        public static MapService Instance {get{return _instance;}}
+        private static MapService _instance;
+
+        private void Awake()
+        {
+            if (_instance == null)
+                _instance = this;
+            else
+            {
+                Destroy(this);
+                Debug.LogError("Singleton of MapService is trying to create another instance.");
+            }
+        }
 
         private void Start()
         {
@@ -23,7 +39,7 @@ namespace ServiceLocator.Map
             ResetTileOverlay();
         }
 
-        private void SubscribeToEvents() => eventService.OnMapSelected.AddListener(LoadMap);
+        private void SubscribeToEvents() => EventService.Instance.OnMapSelected.AddListener(LoadMap);
 
         private void LoadMap(int mapId)
         {

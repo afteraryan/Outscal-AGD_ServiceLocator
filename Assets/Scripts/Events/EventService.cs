@@ -11,10 +11,24 @@ namespace ServiceLocator.Events
     public class EventService : MonoBehaviour
     {
         public GameEventController<int> OnMapSelected { get; private set; }
+        public static EventService Instance {get{return _instance;}}
+        private static EventService _instance;
 
         private void Awake()
         {
             OnMapSelected = new GameEventController<int>();
+            
+            //Singleton Implementation
+            if(_instance == null)
+            {
+                _instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+                Debug.LogError("Singleton of EventService is trying to create another instance.");
+            }
+            
         }
         
     }

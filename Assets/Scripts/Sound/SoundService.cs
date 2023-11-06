@@ -8,6 +8,21 @@ namespace ServiceLocator.Sound
         [SerializeField] private SoundScriptableObject soundScriptableObject;
         [SerializeField] private AudioSource audioEffects;
         [SerializeField] private AudioSource backgroundMusic;
+        
+        //Singleton Declarations
+        public static SoundService Instance {get{return _instance;}}
+        private static SoundService _instance;
+
+        private void Awake()
+        {
+            if (_instance == null)
+                _instance = this;
+            else
+            {
+                Destroy(this);
+                Debug.LogError("Singleton of SoundService is trying to create another instance.");
+            }
+        }
 
         private void Start()
         {
