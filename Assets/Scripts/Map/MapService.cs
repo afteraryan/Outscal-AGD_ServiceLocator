@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ServiceLocator.Events;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using ServiceLocator.Main;
@@ -14,16 +15,24 @@ namespace ServiceLocator.Map
         private Tilemap currentTileMap;
         private MapData currentMapData;
         private SpriteRenderer tileOverlay;
+        
+        private EventService eventService;
 
         public MapService(MapScriptableObject mapScriptableObject)
         {
             this.mapScriptableObject = mapScriptableObject;
             tileOverlay = Object.Instantiate(mapScriptableObject.TileOverlay).GetComponent<SpriteRenderer>();
             ResetTileOverlay();
+        }
+        
+        public void Init(EventService eventService)
+        {
+            this.eventService = eventService;
+            
             SubscribeToEvents();
         }
 
-        private void SubscribeToEvents() => GameService.Instance.EventService.OnMapSelected.AddListener(LoadMap);
+        private void SubscribeToEvents() => eventService.OnMapSelected.AddListener(LoadMap);
 
         private void LoadMap(int mapId)
         {
